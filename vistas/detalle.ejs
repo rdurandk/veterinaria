@@ -1,0 +1,83 @@
+<%- include('templates/cabecera', {tituloWeb: "Pagina de Detalle" }) %>
+
+    <div class="container">
+        <h1>Detalle</h1>
+
+        <% if (error) { %>
+            <p>
+                <%= mensaje %>
+            </p>
+            <div class="d-grid gap-2">
+                <a class="btn btn-dark" href="/">Volver al Inicio</a>
+            </div>
+            <% } else { %>
+                <form id="formularioEditar" data-id="<%= mascota.id %>">
+                    <input type="text" class="form-control mt-3" value="<%= mascota.nombreDuenio %>" id="duenioNombre"
+                        name="nombreDuenio">
+                    <input type="text" class="form-control mt-3" value="<%= mascota.nombreMascota %>" id="mascotaNombre"
+                        name="nombreMascota">
+                    <input type="text" class="form-control mt-3" value="<%= mascota.tipo %>" id="tipo" name="tipo">
+                    <input type="text" class="form-control mt-3" value="<%= mascota.razon %>" id="razon" name="razon">
+                    <div class="d-grid gap-2 col-6 mx-auto">
+                        <button class="btn btn-info mt-4" type="submit">Editar</button>
+                        <button class="btn btn-danger" type="button" id="btnEliminar">Eliminar</button>
+                        <a class="btn btn-warning" type="submit" href="/">Volver</a>
+                    </div>
+                </form>
+                <%}%>
+    </div>
+
+    <%- include('templates/footer') %>
+        <script>
+            const $eliminarButton = document.querySelector("#btnEliminar");
+            const $editarForm = document.querySelector("#formularioEditar");
+
+            $eliminarButton.addEventListener("click", async (e) => {
+                //console.log(e.target)
+                const id = $editarForm.dataset.id;
+                //console.log(id);
+                const data = await fetch(`/${id}`, {
+                    method: "DELETE"
+                });
+                const json = await data.json();
+                if (json.estado) {
+                    window.location.href = "/";
+                } else {
+                    console.log(json);
+                }
+            });
+
+            $editarForm.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const id = e.target.dataset.id;
+                const duenioInput = document.getElementById("duenioNombre").value;
+                const mascotaInput = document.getElementById("mascotaNombre").value;
+                const tipoInput = document.getElementById("tipo").value;
+                const razonInput = document.getElementById("razon").value;
+                console.log(duenioInput, mascotaInput, tipoInput, razonInput, id)
+                try {
+                    const data = await fetch(`/${id}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            nombreDuenio: duenioInput,
+                            nombreMascota: mascotaInput,
+                            tipo: tipoInput,
+                            razon: razonInput
+                        })
+
+                    });
+                    const json = await data.json();
+                    console.log(json);
+                    if (json.estado) {
+                        window.location.href = "/";
+                    } else {
+                        console.log(json)
+                    }
+                } catch (error) {
+                    console.log(error)
+                }
+            }); 
+        </script>

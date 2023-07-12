@@ -1,0 +1,28 @@
+.filter {
+  display: none;
+}
+
+.ul-page .li {
+  display: flex;
+  justify-content: center;
+}
+
+.credits {
+  text-align: center;
+}
+.credits-ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 577px) {
+  .navbar-collapse {
+    display: flex !important;
+    justify-content: space-evenly;
+  }
+  .me-auto {
+    margin-right: 0px !important;
+  }
+}

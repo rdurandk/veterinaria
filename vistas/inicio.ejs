@@ -1,0 +1,60 @@
+<%- include('templates/cabecera', {tituloWeb: "Pagina Inicio" }) %>
+    <div class="container">
+        <h1>Pagina de Inicio</h1>
+        <div class="d-grid gap-2">
+            <a class="btn btn-success" href="/crear">Crear Mascota</a>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#Codigo</th>
+                    <th scope="col">Nombre del Dueño</th>
+                    <th scope="col">Nombre de la Mascota</th>
+                    <th scope="col">Tipo de Mascota</th>
+                    <th scope="col">Razon de su Visita</th>
+                    <th scope="col">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (mascota.length>0) { %>
+                    <% mascota.forEach(el=> { %>
+                        <tr id="filas">
+                            <th scope="row">
+                                <%= el.id %>
+                            </th>
+                            <td id="duenio">
+                                <%= el.nombreDuenio%>
+                            </td>
+                            <td>
+                                <%= el.nombreMascota%>
+                            </td>
+                            <td>
+                                <%= el.tipo%>
+                            </td>
+                            <td>
+                                <%= el.razon%>
+                            </td>
+                            <td>
+                                <div class="d-grid gap-2">
+                                    <a class="btn btn-warning btn-sm" href="/<%= el.id %>">Opcion</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <% }) %>
+                            <% } %>
+            </tbody>
+        </table>
+    </div>
+    <%- include('templates/footer') %>
+        <script>
+            const $filter = document.getElementById("search-filter");
+            $filter.addEventListener("keyup", (e) => {
+                //console.log(e.target.value)
+                document.querySelectorAll("#filas").forEach(el => {
+                    el.querySelector("#duenio").textContent.toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase())
+                        ? el.classList.remove("filter")
+                        : el.classList.add("filter")
+                });
+            });
+        </script>
